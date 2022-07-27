@@ -31,6 +31,8 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
+// STATEMENTS
+
 // var <identifier> = <expression> ;
 // VAR
 type VarStatement struct{
@@ -41,6 +43,16 @@ type VarStatement struct{
 
 func (vs *VarStatement) statementNode() {}
 func (vs *VarStatement) TokenLiteral() string { return vs.Token.Literal }
+
+
+// Return 
+// return <expression>;
+type ReturnStatement struct {
+	Token token.Token // token.RETURN
+	ReturnValue Expression
+}
+func (rs *ReturnStatement) statementNode() {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
 
 // Identifier
 type Identifier struct{
