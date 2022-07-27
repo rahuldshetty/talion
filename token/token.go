@@ -24,9 +24,12 @@ const (
 	DIVIDE = "/"
 	
 	NOT = "!"
+	EQ = "=="
+	NOT_EQ = "!="
 	
 	LT = "<"
 	GT = ">"
+	
 
 	// Delimiters
 	COMMA = ","
