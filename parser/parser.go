@@ -97,6 +97,8 @@ func (p *Parser) parseVarStatement() *ast.VarStatement {
 func (p *Parser) parseReturnStatement() *ast.ReturnStatement{
 	stmt := &ast.ReturnStatement{Token: p.curToken}
 
+	p.nextToken()
+
 	// TODO: Skipping expression
 	for !p.curTokenIs(token.SEMICOLON){
 		p.nextToken()
