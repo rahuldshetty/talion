@@ -28,7 +28,9 @@ const (
 	NOT_EQ = "!="
 	
 	LT = "<"
+	LTE = "<="
 	GT = ">"
+	GTE = ">="
 	
 
 	// Delimiters
