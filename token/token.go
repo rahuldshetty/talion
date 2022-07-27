@@ -19,6 +19,14 @@ const (
 	// Operators
 	ASSIGN = "="
 	PLUS = "+"
+	MINUS = "-"
+	MULTIPLY = "*"
+	DIVIDE = "/"
+	
+	NOT = "!"
+	
+	LT = "<"
+	GT = ">"
 
 	// Delimiters
 	COMMA = ","
@@ -32,11 +40,21 @@ const (
 	// Keywords
 	FUNCTION = "FUNCTION" // fn
 	VAR = "VAR" // var
+	TRUE = "TRUE"
+	FALSE = "FALSE"
+	IF = "IF"
+	ELSE = "ELSE"
+	RETURN = "RETURN"
 )
 
 var keywords = map[string]TokenType{
 	"fn": FUNCTION,
 	"var": VAR,
+	"if": IF,
+	"else": ELSE,
+	"return": RETURN,
+	"true": TRUE,
+	"false": FALSE,
 }
 
 // Check whether given alphabetic text is keyword or identifer
