@@ -234,6 +234,8 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	precedence := p.curPrecedence()
 	p.nextToken()
 	expression.Right = p.parseExpression(precedence)
+	// Decrement precedence by 1 for right associativity
+	// Currently a+b+c will be evaluated as (a+b)+c
 
 	return expression
 }
