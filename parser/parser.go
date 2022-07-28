@@ -21,7 +21,19 @@ const (
 	CALL // myFunction()
 )
 
-
+var precedences = map[token.TokenType]int{
+	token.EQ: EQUALS,
+	token.NOT_EQ: EQUALS,
+	token.LT: LESSGREATER,
+	token.LTE: LESSGREATER,
+	token.GT: LESSGREATER,
+	token.GTE: LESSGREATER,
+	token.PLUS: SUM,
+	token.MINUS: SUM,
+	token.DIVIDE: PRODUCT,
+	token.MULTIPLY: PRODUCT,
+}
+ 
 type (
 	prefixParseFn func() ast.Expression // fn type called for token in prefix pos
 	infixParseFn func(ast.Expression) ast.Expression // fn type called for token in infix pos
@@ -50,12 +62,25 @@ func New(l *lexer.Lexer) *Parser{
 	p.nextToken()
 	p.nextToken()
 
-
+	// unary operator parsing
 	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
 	p.registerPrefix(token.IDENT, p.parseIdentifer)	
 	p.registerPrefix(token.INT, p.parseIntegerLiteral)
 	p.registerPrefix(token.NOT, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
+
+	// binary operatory parsing
+	p.infixParseFns = make(map[token.TokenType]infixParseFn)
+	p.registerInfix(token.PLUS, p.parseInfixExpression)
+	p.registerInfix(token.MINUS, p.parseInfixExpression)
+	p.registerInfix(token.DIVIDE, p.parseInfixExpression)
+	p.registerInfix(token.MULTIPLY, p.parseInfixExpression)
+	p.registerInfix(token.EQ, p.parseInfixExpression)
+	p.registerInfix(token.NOT_EQ, p.parseInfixExpression)
+	p.registerInfix(token.LT, p.parseInfixExpression)
+	p.registerInfix(token.LTE, p.parseInfixExpression)
+	p.registerInfix(token.GT, p.parseInfixExpression)
+	p.registerInfix(token.GTE, p.parseInfixExpression)
 
 	return p
 }
@@ -160,6 +185,16 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 		return nil
 	}
 	leftExp := prefix()
+
+	for !p.peekTokenIs(token.SEMICOLON) && precedence < p.peekPrecedence(){
+		infix := p.infixParseFns[p.peekToken.Type]
+		if infix == nil {
+			return leftExp
+		}
+		p.nextToken()
+		leftExp = infix(leftExp)
+	}
+
 	return leftExp
 }
 
@@ -189,6 +224,21 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 	return expression
 }
 
+func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
+	expression := &ast.InfixExpression{
+		Token: p.curToken,
+		Operator: p.curToken.Literal,
+		Left: left,
+	}
+
+	precedence := p.curPrecedence()
+	p.nextToken()
+	expression.Right = p.parseExpression(precedence)
+
+	return expression
+}
+
+
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
@@ -205,6 +255,21 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.peekError(t)
 		return false
 	}
+}
+
+
+func (p *Parser) peekPrecedence() int {
+	if p, ok := precedences[p.peekToken.Type]; ok {
+		return p
+	}
+	return LOWEST
+}
+
+func (p *Parser) curPrecedence() int {
+	if p, ok := precedences[p.curToken.Type]; ok {
+		return p
+	}
+	return LOWEST
 }
 
 // Expression Evaluation Helper Methods
