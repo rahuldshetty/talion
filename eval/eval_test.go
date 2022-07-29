@@ -111,6 +111,16 @@ func TestNOTOperator(t *testing.T){
 		{"1 != 2", true},
 		{"1 <= 2", true},
 		{"900 >= -4", true},
+
+		{"true == true", true},
+		{"false == false", true},
+		{"true == false", false},
+		{"true != false", true},
+		{"false != true", true},
+		{"(1 < 2) == true", true},
+		{"(1 < 2) == false", false},
+		{"(1 > 2) == true", false},
+		{"(1 > 2) == false", true},
 	}
 	for _, tt := range tests{
 		evaluated := testEval(tt.input)
