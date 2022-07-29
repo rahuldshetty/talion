@@ -12,3 +12,4 @@ Interpreter programming language written with Go language.
     - Conditional Operator: Equal To(==), Not Equal To(!=), Greater Than (<), Lesser Than(<), Less Than or Equal to (<=), Greater Than or Equal To(>=)
 
 - Support Datatype: Integer, Boolean, Null Types.
+- Null/truth based if else conditional statements.
