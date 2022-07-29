@@ -10,6 +10,7 @@ const (
 	INTEGER_OBJ = "INTEGER"
 	BOOLEAN_OBJ = "BOOLEAN"
 	NULL_OBJ = "NULL"
+	RETURN_VALUE_OBJ = "RETURN_VALUE"
 )
 
 // Base Object to represent internal system of interprer - used during runtime evaluation
@@ -40,3 +41,9 @@ type Null struct{}
 func (n *Null) Inspect() string { return "null" }
 func (n *Null) Type() ObjectType { return NULL_OBJ }
 
+// Return Value Object
+type ReturnValue struct{
+	Value Object
+}
+func (rv *ReturnValue) Inspect() string { return rv.Value.Inspect() }
+func (rv *ReturnValue) Type() ObjectType { return RETURN_VALUE_OBJ }
