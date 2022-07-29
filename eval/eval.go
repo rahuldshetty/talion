@@ -1,6 +1,8 @@
 package eval
 
 import (
+	"fmt"
+
 	"github.com/rahuldshetty/talion/ast"
 	"github.com/rahuldshetty/talion/object"
 )
@@ -57,8 +59,9 @@ func evalProgram(program *ast.Program) object.Object {
 	for _, statement := range program.Statements{
 		result = Eval(statement)		
 
-		if returnValue, ok := result.(*object.ReturnValue); ok{
-			return returnValue.Value
+		switch result := result.(type){
+			case *object.ReturnValue: return result.Value
+			case *object.Error: return result
 		}
 	}
 
@@ -71,8 +74,11 @@ func evalBlockStatement(block *ast.BlockStatement) object.Object{
 	for _, statement := range block.Statements{
 		result = Eval(statement)		
 
-		if result != nil && result.Type() == object.RETURN_VALUE_OBJ {
-			return result
+		if result != nil{
+			rt := result.Type()
+			if rt == object.RETURN_VALUE_OBJ || rt == object.ERROR_OBJ {
+				return result
+			}
 		}
 	}
 
@@ -111,7 +117,7 @@ func evalPrefixExpression(operator string, right object.Object) object.Object{
 		case "-":
 			return evalMinusPrefixOperatorExpression(right)
 		default:
-			return NULL
+			return newError("Unknown operator: %s%s", operator, right.Type())
 	}
 }
 
@@ -129,8 +135,10 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 		case operator == "!=":
 			return nativeBoolToBooleanObject(left != right)
 		
+		case left.Type() != right.Type():
+			return newError("Type mismatch: %s %s %s", left.Type() ,operator, right.Type())
 
-		default: return NULL
+		default: return newError("Unknown operator: %s %s %s", left.Type() ,operator, right.Type())
 	}
 }
 
@@ -162,13 +170,13 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		case "==":  return nativeBoolToBooleanObject(leftVal == rightVal)
 		case "!=":  return nativeBoolToBooleanObject(leftVal != rightVal)
 		
-		default: return NULL
+		default: return newError("Unknown operator: %s %s %s", left.Type() ,operator, right.Type())
 	}
 }
 
 func evalMinusPrefixOperatorExpression(right object.Object) object.Object{
 	if right.Type() != object.INTEGER_OBJ{
-		return NULL
+		return newError("Unknown operator: -%s", right.Type())
 	}
 	value := right.(*object.Integer).Value
 	return &object.Integer{Value: -value}
@@ -179,4 +187,8 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean{
 		return TRUE
 	}
 	return FALSE
+}
+
+func newError(format string, a ...interface{}) *object.Error{
+	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
