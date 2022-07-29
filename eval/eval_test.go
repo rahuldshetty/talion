@@ -17,6 +17,7 @@ func TestEvalIntegerExpression(t *testing.T){
 		{"10", 10},
 		{"-5", -5},
 		{"-10", -10},
+
 		{"5 + 5 + 5 + 5 - 10", 10},
 		{"2 * 2 * 2 * 2 * 2", 32},
 		{"-50 + 100 + -50", 0},
@@ -97,6 +98,19 @@ func TestNOTOperator(t *testing.T){
 		{"!!true", true},
 		{"!!false", false},
 		{"!!5", true},
+
+		{"1 < 2", true},
+		{"1 > 2", false},
+		{"1 < 1", false},
+		{"1 <= 1", true},
+		{"1 >= 1", true},
+		{"1 > 1", false},
+		{"1 == 1", true},
+		{"1 != 1", false},
+		{"1 == 2", false},
+		{"1 != 2", true},
+		{"1 <= 2", true},
+		{"900 >= -4", true},
 	}
 	for _, tt := range tests{
 		evaluated := testEval(tt.input)
