@@ -36,10 +36,10 @@ func TestVarStatements(t *testing.T) {
 			return
 		}
 
-		// val := stmt.(*ast.VarStatement).Value
-		// if !testLiteralExpression(t, val, tt.expectedValue) {
-		// 	return
-		// }
+		val := stmt.(*ast.VarStatement).Value
+		if !testLiteralExpression(t, val, tt.expectedValue) {
+			return
+		}
 	}
 }
 
@@ -73,9 +73,9 @@ func TestReturnStatements(t *testing.T) {
 			t.Fatalf("returnStmt.TokenLiteral not 'return', got %q",
 				returnStmt.TokenLiteral())
 		}
-		// if testLiteralExpression(t, returnStmt.ReturnValue, tt.expectedValue) {
-		// 	return
-		// }
+		if testLiteralExpression(t, returnStmt.ReturnValue, tt.expectedValue) {
+			return
+		}
 	}
 }
 
@@ -180,9 +180,9 @@ func TestParsingPrefixExpressions(t *testing.T) {
 			t.Fatalf("exp.Operator is not '%s'. got=%s",
 				tt.operator, exp.Operator)
 		}
-		// if !testLiteralExpression(t, exp.Right, tt.value) {
-		// 	return
-		// }
+		if !testLiteralExpression(t, exp.Right, tt.value) {
+			return
+		}
 	}
 }
 
