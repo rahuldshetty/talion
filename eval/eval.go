@@ -27,9 +27,15 @@ func Eval(node ast.Node) object.Object {
 			return nativeBoolToBooleanObject(node.Value)
 
 		// Operator Expression
+		case *ast.InfixExpression:
+			left := Eval(node.Left)
+			right := Eval(node.Right)
+			return evalInfixExpression(node.Operator, left, right)
+		
 		case *ast.PrefixExpression:
 			right := Eval(node.Right)
 			return evalPrefixExpression(node.Operator, right)
+
 	}
 	return nil
 }
@@ -44,6 +50,7 @@ func evalStatements(statements []ast.Statement) object.Object {
 	return result
 }
 
+// Unary Operator Switching
 func evalPrefixExpression(operator string, right object.Object) object.Object{
 	switch operator{
 		case "!": 
@@ -55,6 +62,16 @@ func evalPrefixExpression(operator string, right object.Object) object.Object{
 	}
 }
 
+// Binary Operator Switching
+func evalInfixExpression(operator string, left, right object.Object) object.Object{
+	switch{
+		case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
+			return evalIntegerInfixExpression(operator, left, right)
+
+		default: return NULL
+	}
+}
+
 // NOT Operator Logic
 func evalNOTOperatorExpression(right object.Object) object.Object {
 	switch right{
@@ -62,6 +79,21 @@ func evalNOTOperatorExpression(right object.Object) object.Object {
 		case FALSE: return TRUE
 		case NULL: return TRUE
 		default: return FALSE
+	}
+}
+
+// Binary Operator Evaluation - Integer & Integer
+func evalIntegerInfixExpression(operator string, left, right object.Object) object.Object {
+	leftVal := left.(*object.Integer).Value
+	rightVal := right.(*object.Integer).Value
+
+	switch operator{
+		case "+":  return &object.Integer{Value: leftVal + rightVal}
+		case "-":  return &object.Integer{Value: leftVal - rightVal}
+		case "*":  return &object.Integer{Value: leftVal * rightVal}
+		case "/":  return &object.Integer{Value: leftVal / rightVal}
+		
+		default: return NULL
 	}
 }
 
