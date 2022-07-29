@@ -6,8 +6,29 @@ import (
 	"io"
 
 	"github.com/rahuldshetty/talion/lexer"
-	"github.com/rahuldshetty/talion/token"
+	"github.com/rahuldshetty/talion/parser"
 )
+
+const ERROR_MESSAGE = ` 
+                                    		\ / _
+                                      ___,,,
+                                      \_[o o]
+     There is an Error !              C\  _\/
+             /                     _____),_/__
+        ________                  /     \/   /
+      _|       .|                /      o   /
+     | |       .|               /          /
+      \|       .|              /          /
+       |________|             /_        \/
+       __|___|__             _//\        \
+ _____|_________|____       \  \ \        \
+                    _|       ///  \        \
+                   |               \       /
+                   |               /      /
+                   |              /      /
+ ________________  |             /__    /_
+ b'ger        ...|_|.............. /______\.......
+`
 
 const PROMPT = ">> "
 
@@ -22,9 +43,23 @@ func Start(in io.Reader, out io.Writer){
 
 		line := scanner.Text()
 		l := lexer.New(line)
+		p := parser.New(l)
 
-		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-			fmt.Printf("%+v\n", tok)
+		program := p.ParseProgram()
+		if len(p.Errors()) != 0 {
+			printParserErrors(out, p.Errors())
+			continue
 		}
+
+		io.WriteString(out, program.String())
+		io.WriteString(out, "\n")
 	}
 }
+
+func printParserErrors(out io.Writer,errors []string){
+	io.WriteString(out, ERROR_MESSAGE)
+	io.WriteString(out, "Parser Errors:\n")
+	for _, msg := range errors{
+		io.WriteString(out, "\t"+msg+"\n")
+	}
+}	
