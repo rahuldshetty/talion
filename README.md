@@ -48,3 +48,5 @@ Interpreter programming language written with Go language.
     var add_two = adder(2)
     add_two(20) // Result is 22
     ```
+- Garbage Collector: Leverages Go's GC to manage memory in talion language.
+
