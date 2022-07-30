@@ -16,11 +16,14 @@ Interpreter programming language written with Go language.
 - Variable binding: var a = 100;
 - Functions: 
 `   var add = fn(x, y) { return x + y; }
+
     add(1, add(1, 1))
 `
 - Closure Support & Higher Order function
 `
     var adder = fn(x){ fn(y){ x + y } }
+
     var add_two = adder(2)
+
     add_two(20) // Result is 22
 `
