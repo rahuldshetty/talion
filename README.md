@@ -33,6 +33,7 @@ Interpreter programming language written with Go language.
     var a = 10;
     var b = "hello"
     var c = true;
+    var j = "hello" + " " + "world"
     ```
 - Null/truth based if else conditional statements.
 - Variable binding: 

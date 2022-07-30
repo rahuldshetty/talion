@@ -227,6 +227,8 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 
 		case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
 			return evalStringInfixExpression(operator, left, right)
+		
+		// TODO: String comparisor with == and !=
 
 		// pointer comparison here to check for equality between booleans
 		// if left & right is boolean type then they are referenced already
