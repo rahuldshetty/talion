@@ -129,6 +129,17 @@ func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
 func (il *IntegerLiteral) String() string { return il.Token.Literal }
 
 
+// String Literal
+type StringLiteral struct{
+	Token token.Token
+	Value string
+}
+
+func (sl *StringLiteral) expressionNode() {}
+func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
+func (sl *StringLiteral) String() string { return sl.Token.Literal }
+
+
 // PrefixExpression
 type PrefixExpression struct{
 	Token token.Token // prefix token like ! -

@@ -128,6 +128,7 @@ func (l *Lexer) readNumber() string {
 }
 
 // read string
+// TODO: Support for escape characters
 func (l *Lexer) readString() string{
 	position := l.position + 1
 	for {
