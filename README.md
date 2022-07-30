@@ -13,3 +13,4 @@ Interpreter programming language written with Go language.
 
 - Support Datatype: Integer, Boolean, Null Types.
 - Null/truth based if else conditional statements.
+- Variable binding
