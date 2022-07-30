@@ -13,4 +13,8 @@ Interpreter programming language written with Go language.
 
 - Support Datatype: Integer, Boolean, Null Types.
 - Null/truth based if else conditional statements.
-- Variable binding
+- Variable binding: var a = 100;
+- Functions: 
+`   var add = fn(x, y) { return x + y; }
+    add(1, add(1, 1))
+`
