@@ -43,6 +43,10 @@ const (
 	LBRACE = "{"
 	RBRACE = "}"
 
+	// List
+	LBRACKET = "["
+	RBRACKET = "]"
+
 	// Keywords
 	FUNCTION = "FUNCTION" // fn
 	VAR = "VAR" // var

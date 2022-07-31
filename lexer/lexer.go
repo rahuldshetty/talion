@@ -51,6 +51,8 @@ func (l *Lexer) NextToken() token.Token {
 	case '-': tok = newToken(token.MINUS, l.ch)
 	case '*': tok = newToken(token.MULTIPLY, l.ch)
 	case '/': tok = newToken(token.DIVIDE, l.ch)
+	case '[': tok = newToken(token.LBRACKET, l.ch)
+	case ']': tok = newToken(token.RBRACKET, l.ch)
 	case '!': 
 		if l.peekChar() == '='{
 			ch := l.ch
