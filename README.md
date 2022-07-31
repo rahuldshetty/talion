@@ -56,3 +56,9 @@ Interpreter programming language written with Go language.
     ```
 - Garbage Collector: Leverages Go's GC to manage memory in talion language.
 
+- Builtin Functions:
+  - len(<string_object>)
+    ```
+    var s = "Hello world"
+    len(s) // returns 11
+    ```
