@@ -371,5 +371,22 @@ func TestBuiltinFunctions(t *testing.T){
 		}
 
 	}
+}
 
+func TestListLiterals(t *testing.T){
+	input := "[1, 2*2, 3+3]"
+	evaluated := testEval(input)
+
+	result, ok := evaluated.(*object.List)
+	if !ok{
+		t.Fatalf("object is not List Type. got=%T (%+v)", evaluated, evaluated)
+	}
+
+	if len(result.Elements) != 3{
+		t.Fatalf("array has wrong num of elements. got=%d", len(result.Elements))
+	}
+
+	testIntegerObject(t, result.Elements[0], 1)
+	testIntegerObject(t, result.Elements[1], 4)
+	testIntegerObject(t, result.Elements[2], 6)
 }

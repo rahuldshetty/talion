@@ -19,6 +19,7 @@ const (
 	ERROR_OBJ = "ERROR"
 	FUNCTION_OBJ = "FUNCTION"
 	BUILTIN_OBJ = "BUILTIN"
+	LIST_OBJ = "LIST"
 )
 
 // Base Object to represent internal system of interprer - used during runtime evaluation
@@ -106,3 +107,25 @@ type Builtin struct {
 
 func (b *Builtin) Type() ObjectType { return BUILTIN_OBJ }
 func (b *Builtin) Inspect() string { return "builtin function" }
+
+// List Object
+type List struct{
+	Elements []Object
+}
+
+func (l *List) Type() ObjectType { return LIST_OBJ }
+func (l *List) Inspect() string{
+	var out bytes.Buffer
+
+	elements := []string{}
+
+	for _, e := range l.Elements{
+		elements = append(elements, e.Inspect())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(elements, ", "))
+	out.WriteString("]")
+
+	return out.String()
+}
