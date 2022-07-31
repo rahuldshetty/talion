@@ -37,7 +37,7 @@ Interpreter programming language written with Go language.
     ```
 - Data Structures:
     - List: 
-        Ordered sequence of elements of any datatypes. 
+        Ordered sequence which can store elements of any datatypes. Mutable by nature. 
 
         Lists in talion support zero-indexed and negative indexing. 
 
@@ -50,6 +50,8 @@ Interpreter programming language written with Go language.
         ls[2]
         ls[-1]
         len(ls) // return 4
+        push(ls, 1) // push to end of array
+        ls[-1] // return 1
         ```
 
 - Null/truth based if else conditional statements.

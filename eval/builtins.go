@@ -26,4 +26,18 @@ var builtins = map[string]*object.Builtin{
 
 		},
 	},
+	"push": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 2{
+				return newError("Wrong number of arguments. got=%d, want=2", len(args))
+			}
+
+			if args[0].Type() != object.LIST_OBJ{
+				return newError("Argument to push must be ARRAY, got %s", args[0].Type())
+			}
+			arr := args[0].(*object.List)
+			arr.Elements = append(arr.Elements, args[1])
+			return NULL
+		},
+	},
 }
