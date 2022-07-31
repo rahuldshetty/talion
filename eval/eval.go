@@ -53,6 +53,17 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			}
 			return &object.List{Elements: elements}
 
+		case *ast.IndexExpression:
+			left := Eval(node.Left, env)
+			if isError(left){
+				return left
+			}
+			index := Eval(node.Index, env)
+			if isError(index){
+				return index
+			}
+			return evalIndexExpression(left, index)
+
 		// Function Definition
 		case *ast.FunctionLiteral:
 			params := node.Parameters
@@ -208,6 +219,29 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 	}
 
 	return result
+}
+
+
+// Index evaluation
+func evalIndexExpression(left, index object.Object) object.Object{
+	switch{
+		case left.Type() == object.LIST_OBJ && index.Type() == object.INTEGER_OBJ:
+			return evalListIndexExpression(left, index)
+		default:
+			return newError("Index operator not supported: %s", left.Type())
+	}
+}
+
+// Fetch index element from left list
+func evalListIndexExpression(list, index object.Object) object.Object {
+	listObject := list.(*object.List)
+	idx := index.(*object.Integer).Value
+	max := int64(len(listObject.Elements) - 1)
+
+	if idx < 0 || idx > max{
+		return NULL
+	}
+	return listObject.Elements[idx]
 }
 
 func evalIdentifer(node *ast.Identifier, env *object.Environment) object.Object {

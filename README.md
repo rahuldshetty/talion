@@ -28,13 +28,20 @@ Interpreter programming language written with Go language.
         false == (1>1)
         ```
 
-- Support Datatype: Integer, String, Boolean, Null Types.
+- Support Datatype: Integer, String, Boolean, Null Types, List
     ```
     var a = 10;
     var b = "hello"
     var c = true;
     var j = "hello" + " " + "world"
     ```
+- Data Structures:
+    - List: Ordered sequence of elements of any datatypes.
+        ```
+        var l = [1, 2, 3, 4]
+        var l1 = [1, 2, b, "hello"] 
+        ```
+
 - Null/truth based if else conditional statements.
 - Variable binding: 
     ```
