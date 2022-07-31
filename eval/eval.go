@@ -38,6 +38,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			}
 			env.Set(node.Name.Value, val)
 
+		case *ast.AssignStatement:
+			return evalAssignmentExpression(node, env)
+
 		case *ast.ReturnStatement:
 			val := Eval(node.ReturnValue, env)
 			if isError(val){
@@ -219,6 +222,23 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 	}
 
 	return result
+}
+
+func evalAssignmentExpression(assignment *ast.AssignStatement, env *object.Environment) object.Object{
+	evaluated := Eval(assignment.Value, env)
+	if isError(evaluated){
+		return evaluated
+	}
+
+	switch assignment.Operator{
+		// TODO: operator assignment
+
+		case "=":
+			env.Set(assignment.Name.String(), evaluated)
+	}
+
+	// return evaluated
+	return nil
 }
 
 

@@ -257,6 +257,23 @@ func TestVarStatements(t *testing.T){
 	}
 }
 
+func TestAssignExpressions(t *testing.T){
+	tests := []struct{
+		input string
+		expected int64
+	}{
+		{"a=5;a;", 5},
+		{"var a = 5; a = 10; a;", 10},
+		{"var a = 5; a = a + 10; a;", 15},
+		{"var a = [1, 2, 3]; a = 1; a;", 1},
+		{"var a = [1, 2, 3]; b=a; b[2];", 3},
+	}
+	for _, tt := range tests{
+		evaluated := testEval(tt.input)
+		testIntegerObject(t, evaluated, tt.expected)
+	}
+}
+
 func TestFunctionObject(t *testing.T){
 	input := "fn(x) { x + 2; };"
 	evaluated := testEval(input)

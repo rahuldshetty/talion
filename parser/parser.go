@@ -13,6 +13,7 @@ import (
 const (
 	_ int = iota
 	LOWEST
+	ASSIGN // =
 	EQUALS // ==
 	LESSGREATER // > or <
 	SUM // +
@@ -35,6 +36,7 @@ var precedences = map[token.TokenType]int{
 	token.MULTIPLY: PRODUCT,
 	token.LPAREN: CALL,
 	token.LBRACKET: INDEX,
+	token.ASSIGN: ASSIGN,
 }
  
 type (
@@ -94,6 +96,7 @@ func New(l *lexer.Lexer) *Parser{
 	p.registerInfix(token.GTE, p.parseInfixExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
+	p.registerInfix(token.ASSIGN, p.parseAssignExpression)
 
 	return p
 }
@@ -354,6 +357,29 @@ func (p *Parser) parseExpressionList(end token.TokenType) []ast.Expression{
 	}
 
 	return list
+}
+
+// parses a bare assignment without var
+func (p *Parser) parseAssignExpression(name ast.Expression) ast.Expression{
+	stmt := &ast.AssignStatement{Token: p.curToken}
+	
+	if n, ok := name.(*ast.Identifier); ok {
+		stmt.Name = n
+	} else {
+		msg := fmt.Sprintf("expected assign token to be IDENT, got %s.", name.TokenLiteral())
+		p.errors = append(p.errors, msg)
+		return nil
+	}
+
+	oper := p.curToken
+	p.nextToken()
+
+	// TODO: Assign & Operator +=, -=, *=, /=
+	stmt.Operator = oper.Literal
+
+	stmt.Value = p.parseExpression(LOWEST)
+
+	return stmt
 }
 
 func (p *Parser) parseIndexExpression(left ast.Expression) ast.Expression{

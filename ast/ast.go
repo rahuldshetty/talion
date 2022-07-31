@@ -72,6 +72,31 @@ func (vs *VarStatement) String() string {
 	return out.String()
 }
 
+
+// Assignment Statement
+// Operator stores string info - '', '+', '-', '/' operation
+type AssignStatement struct{
+	Token token.Token // = token
+	Name *Identifier // hold the identifier of the binding
+	Operator string // 
+	Value Expression // expression that produces the value
+}
+
+func (as *AssignStatement) expressionNode() {}
+func (as *AssignStatement) TokenLiteral() string { return as.Token.Literal }
+
+func (as *AssignStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(as.Name.String())
+	out.WriteString(as.Operator)
+	if as.Value != nil {
+		out.WriteString(as.Value.String())
+	}
+	out.WriteString(";")
+	return out.String()
+}
+
 // Return 
 // return <expression>;
 type ReturnStatement struct {
