@@ -33,7 +33,7 @@ var builtins = map[string]*object.Builtin{
 			}
 
 			if args[0].Type() != object.LIST_OBJ{
-				return newError("Argument to push must be ARRAY, got %s", args[0].Type())
+				return newError("Argument to push must be LIST, got %s", args[0].Type())
 			}
 			arr := args[0].(*object.List)
 			arr.Elements = append(arr.Elements, args[1])
