@@ -30,6 +30,8 @@ Interpreter programming language written with Go language.
 
 - Support Datatype: Integer, String, Boolean, Null Types, List
     ```
+    my_var = 10
+    my_n = 10 + my_var
     var a = 10;
     var b = "hello"
     var c = true;
