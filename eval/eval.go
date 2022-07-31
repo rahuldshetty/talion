@@ -236,12 +236,19 @@ func evalIndexExpression(left, index object.Object) object.Object{
 func evalListIndexExpression(list, index object.Object) object.Object {
 	listObject := list.(*object.List)
 	idx := index.(*object.Integer).Value
-	max := int64(len(listObject.Elements) - 1)
+	max := int64(len(listObject.Elements))
 
-	if idx < 0 || idx > max{
-		return NULL
+	// zero-indexing: 0 to len(list) - 1
+	if idx >= 0 && idx < max{
+		return listObject.Elements[idx]
 	}
-	return listObject.Elements[idx]
+
+	// negative-indexing: -1 to -len(list)
+	if idx >= -max && idx <= -1{
+		return listObject.Elements[max + idx]
+	}
+	
+	return NULL
 }
 
 func evalIdentifer(node *ast.Identifier, env *object.Environment) object.Object {

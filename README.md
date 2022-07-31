@@ -36,10 +36,18 @@ Interpreter programming language written with Go language.
     var j = "hello" + " " + "world"
     ```
 - Data Structures:
-    - List: Ordered sequence of elements of any datatypes.
+    - List: 
+        Ordered sequence of elements of any datatypes. 
+
+        Lists in talion support zero-indexed and negative indexing. 
+
+        Out of bound index values will return null object in response.
         ```
         var l = [1, 2, 3, 4]
         var l1 = [1, 2, b, "hello"] 
+        l1[0]
+        l1[2]
+        l1[-1]
         ```
 
 - Null/truth based if else conditional statements.
