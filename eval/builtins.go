@@ -37,7 +37,7 @@ var builtins = map[string]*object.Builtin{
 			}
 			arr := args[0].(*object.List)
 			arr.Elements = append(arr.Elements, args[1])
-			return NULL
+			return nil
 		},
 	},
 }
