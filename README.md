@@ -44,10 +44,12 @@ Interpreter programming language written with Go language.
         Out of bound index values will return null object in response.
         ```
         var l = [1, 2, 3, 4]
-        var l1 = [1, 2, b, "hello"] 
-        l1[0]
-        l1[2]
-        l1[-1]
+        var b = 4
+        var ls = [1, 2, b, "hello"] 
+        ls[0]
+        ls[2]
+        ls[-1]
+        len(ls) // return 4
         ```
 
 - Null/truth based if else conditional statements.

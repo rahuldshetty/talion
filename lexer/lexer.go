@@ -114,7 +114,14 @@ func (l *Lexer) peekChar() byte {
 // fetch alphabetical text from position
 func (l *Lexer) readIdentifer() string {
 	position := l.position
-	for isLetter(l.ch){
+
+	// Identifer should start with alphabet
+	if isLetter(l.ch){
+		l.readChar()
+	}
+
+	// Identifier can be formed with difit or _ combination
+	for isLetter(l.ch) || isDigit(l.ch) || l.ch == '_'{
 		l.readChar()
 	}
 	return l.input[position:l.position]
