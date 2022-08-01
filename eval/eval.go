@@ -253,9 +253,29 @@ func evalIndexExpression(left, index object.Object) object.Object{
 			return evalListIndexExpression(left, index)
 		case left.Type() == object.STRING_OBJ && index.Type() == object.INTEGER_OBJ:
 			return evalStringIndexExpression(left, index)
+		case left.Type() == object.HASH_OBJ:
+			return evalHashIndexExpression(left, index)
 		default:
 			return newError("Index operator not supported: %s", left.Type())
 	}
+}
+
+// Hash key index expression 
+func evalHashIndexExpression(hash, index object.Object) object.Object{
+	hashObject := hash.(*object.Hash)
+
+	key, ok := index.(object.Hashable)
+	if !ok {
+		return newError("Type not support as hash key: %s", index.Type())
+	}
+
+	pair, ok := hashObject.Pairs[key.HashKey()]
+
+	if !ok{
+		return NULL
+	}
+
+	return pair.Value
 }
 
 // Fetch index element from left list

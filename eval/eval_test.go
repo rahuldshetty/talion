@@ -226,6 +226,10 @@ func TestErrorHandling(t *testing.T) {
 			`"Hello" - "World"`,
 			"Unknown operator: STRING - STRING",
 		},
+		{
+			`{"name":"hello"}[fn(x){x}]`,
+			"Type not support as hash key: FUNCTION",
+		},
 	}
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
@@ -428,7 +432,7 @@ func TestListLiterals(t *testing.T){
 	testIntegerObject(t, result.Elements[2], 6)
 }
 
-func TestListIndexExpressions(t *testing.T){
+func TestIndexExpressions(t *testing.T){
 	inputs := []struct{
 		input string
 		expected interface{}
@@ -484,6 +488,26 @@ func TestListIndexExpressions(t *testing.T){
 		{
 			"[1, 2, 3][-4]",
 			nil,
+		},
+		{
+			`{"1":1, "2":2, "3": 3}["1"]`,
+			1,
+		},
+		{
+			`{"1":1, "2":2, "3": 3}["2"]`,
+			2,
+		},
+		{
+			`{"1":1, "2":2, "3": 3}["3"]`,
+			3,
+		},
+		{
+			`{"1":1, "2":2, "foo": 3}["foo"]`,
+			3,
+		},
+		{
+			`{"bar":1, "2":2, "foo": 3}["bar"]`,
+			1,
 		},
 	}
 
