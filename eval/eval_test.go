@@ -343,6 +343,22 @@ func TestStringLiteral(t *testing.T){
 	}
 }
 
+func TestStringIndexing(t *testing.T){
+	input := `"Hello World"[0];`
+
+	evaluated := testEval(input)
+	str,ok := evaluated.(*object.String)
+	
+	if !ok {
+		t.Fatalf("object is not String. got=%T (%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "H"{
+		t.Errorf("String has wrong value. got=%q", str.Value)
+	}
+}
+
+
 func TestStringConcatenation(t *testing.T){
 	input := `"Hello" + " " + "World!"`
 

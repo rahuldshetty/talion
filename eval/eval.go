@@ -247,6 +247,8 @@ func evalIndexExpression(left, index object.Object) object.Object{
 	switch{
 		case left.Type() == object.LIST_OBJ && index.Type() == object.INTEGER_OBJ:
 			return evalListIndexExpression(left, index)
+		case left.Type() == object.STRING_OBJ && index.Type() == object.INTEGER_OBJ:
+			return evalStringIndexExpression(left, index)
 		default:
 			return newError("Index operator not supported: %s", left.Type())
 	}
@@ -270,6 +272,27 @@ func evalListIndexExpression(list, index object.Object) object.Object {
 	
 	return NULL
 }
+
+
+// Fetch index element from left list
+func evalStringIndexExpression(str, index object.Object) object.Object {
+	str_val := str.(*object.String).Value
+	idx := index.(*object.Integer).Value
+	max := int64(len(str_val))
+
+	// zero-indexing: 0 to len(list) - 1
+	if idx >= 0 && idx < max{
+		return &object.String{Value: string(str_val[idx]) }
+	}
+
+	// negative-indexing: -1 to -len(list)
+	if idx >= -max && idx <= -1{
+		return  &object.String{Value: string(str_val[max + idx]) }
+	}
+	
+	return NULL
+}
+
 
 func evalIdentifer(node *ast.Identifier, env *object.Environment) object.Object {
 	if val, ok := env.Get(node.Value); ok {
