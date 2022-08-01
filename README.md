@@ -59,6 +59,7 @@ Interpreter programming language written with Go language.
         
     - Hash: Dictionary/Map based datastructure that stores key, value pair object. 
       Datatype supported to be hashed as key - Integer, Boolean, String
+      Supports Get/Set through simple index & assignment operators.
       ```
       a = {1:"one", 2:"two", "3": 3, 3: "three"}
       a[1]
@@ -67,6 +68,8 @@ Interpreter programming language written with Go language.
       a["3"]
 
       a["three"] // NULL if key doesn't exist
+      a["three"] = 102 // create new key
+      a[3] = 1   // update existing key
       ```
 
 - Null/truth based if else conditional statements.
