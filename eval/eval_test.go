@@ -558,3 +558,35 @@ func TestHashLiterals(t *testing.T) {
 		testIntegerObject(t, pair.Value, expectedValue)
 	}
 }
+
+func TestHashAssignmentExpression(t *testing.T){
+	inputs := []struct{
+		input string
+		expected int64
+	}{
+		{
+			`mp = {1:1, 2:2, 3:3}
+			mp[1] = 0
+			mp[4] = 0
+			mp[1]`,
+			0,
+		},
+		{
+			`mp = {1:1, 2:2, 3:3}
+			mp[1] = 0
+			mp[4] = 12
+			mp[4]`,
+			12,
+		},
+	}
+
+	for _, tt := range inputs{
+		evaluated := testEval(tt.input)
+		integer, ok := evaluated.(*object.Integer)
+		if !ok {
+			t.Fatalf("object is not Integer. got=%T (%+v)", evaluated, evaluated)
+		}
+		testIntegerObject(t, integer, tt.expected)
+	}
+
+}

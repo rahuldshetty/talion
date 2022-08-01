@@ -394,12 +394,18 @@ func (p *Parser) parseExpressionList(end token.TokenType) []ast.Expression{
 func (p *Parser) parseAssignExpression(name ast.Expression) ast.Expression{
 	stmt := &ast.AssignStatement{Token: p.curToken}
 	
-	if n, ok := name.(*ast.Identifier); ok {
-		stmt.Name = n
-	} else {
-		msg := fmt.Sprintf("expected assign token to be IDENT, got %s.", name.TokenLiteral())
-		p.errors = append(p.errors, msg)
-		return nil
+	switch node := name.(type){
+		case *ast.Identifier:
+			stmt.Name = node
+
+		// Hash Map
+		case *ast.IndexExpression:
+			return p.parseHashAssigmentExpression(node)
+		
+		default:
+			msg := fmt.Sprintf("expected assign token to be IDENT, got %s.", name.TokenLiteral())
+			p.errors = append(p.errors, msg)
+			return nil
 	}
 
 	oper := p.curToken
@@ -413,16 +419,34 @@ func (p *Parser) parseAssignExpression(name ast.Expression) ast.Expression{
 	return stmt
 }
 
+// Parsing token for Hash assignment
+func (p *Parser) parseHashAssigmentExpression(indexp *ast.IndexExpression) ast.Expression{
+	hashAssignExpression := &ast.HashAssignStatement{Token: p.curToken}
+	
+	hashAssignExpression.Name = indexp.Left.(*ast.Identifier)
+	hashAssignExpression.Key = indexp.Index
+
+	if !p.curTokenIs(token.ASSIGN){
+		return nil
+	}
+	p.nextToken()
+
+	hashAssignExpression.Value = p.parseExpression(LOWEST)
+
+	return hashAssignExpression
+}
+
 func (p *Parser) parseIndexExpression(left ast.Expression) ast.Expression{
-	exp := &ast.IndexExpression{Token: p.curToken, Left: left}
+	curToken := p.curToken
 	
 	p.nextToken()
-	exp.Index = p.parseExpression(LOWEST)
+	expIndex := p.parseExpression(LOWEST)
 
 	if !p.expectPeek(token.RBRACKET){
 		return nil
 	}
-	return exp
+
+	return &ast.IndexExpression{Token: curToken, Left: left, Index: expIndex}
 }
 
 // Function

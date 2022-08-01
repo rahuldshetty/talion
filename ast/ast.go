@@ -372,3 +372,27 @@ func (hl *HashLiteral) String() string {
 	
 	return out.String()
 }
+
+
+// Hash Assignment Statement
+type HashAssignStatement struct{
+	Token token.Token // []
+	Name *Identifier
+	Key Expression // hold the identifier of the binding
+	Value Expression // expression that produces the value
+}
+
+func (has *HashAssignStatement) expressionNode() {}
+func (has *HashAssignStatement) TokenLiteral() string { return has.Token.Literal }
+
+func (has *HashAssignStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(has.Name.String())
+	out.WriteString("[")
+	out.WriteString(has.Key.String())
+	out.WriteString("] =")
+	out.WriteString(has.Value.String())
+	out.WriteString(";")
+	return out.String()
+}

@@ -60,6 +60,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		case *ast.HashLiteral:
 			return evalHashLiteral(node, env)
 
+		case *ast.HashAssignStatement:
+			return evalHashAssignment(node, env)
+
 		case *ast.IndexExpression:
 			left := Eval(node.Left, env)
 			if isError(left){
@@ -243,6 +246,44 @@ func evalAssignmentExpression(assignment *ast.AssignStatement, env *object.Envir
 
 	// return evaluated
 	return nil
+}
+
+func evalHashAssignment(hashAssign *ast.HashAssignStatement, env *object.Environment) object.Object{
+	// check if hashmap exists
+	hash, ok := env.Get(hashAssign.Name.String())
+
+	if !ok{
+		return newError("Invalid Hash reference: %s", hashAssign.Name.Value)
+	}
+
+	hashMap := hash.(*object.Hash)
+	if isError(hashMap){
+		return hashMap
+	}
+	
+	// get key node value & check if its hashable
+	key := Eval(hashAssign.Key, env)
+	if isError(key){
+		return key
+	}
+
+	hashKey, ok := key.(object.Hashable)
+
+	if !ok {
+		return newError("Type not support as hash key: %s", key.Type())
+	}
+
+	hashed := hashKey.HashKey()
+
+	value := Eval(hashAssign.Value, env)
+	if isError(value){
+		return value
+	}
+
+	hashMap.Pairs[hashed] = object.HashPair{ Key: key, Value: value }
+
+	return nil
+
 }
 
 
