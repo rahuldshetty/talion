@@ -1,6 +1,8 @@
 package eval
 
 import (
+	"fmt"
+
 	"github.com/rahuldshetty/talion/object"
 )
 
@@ -37,6 +39,14 @@ var builtins = map[string]*object.Builtin{
 			}
 			arr := args[0].(*object.List)
 			arr.Elements = append(arr.Elements, args[1])
+			return nil
+		},
+	},
+	"print": {
+		Fn: func(args ...object.Object) object.Object{
+			for _, arg := range args{
+				fmt.Println(arg.Inspect())
+			}
 			return nil
 		},
 	},

@@ -56,6 +56,18 @@ Interpreter programming language written with Go language.
         push(ls, 1) // push to end of array
         ls[-1] // return 1
         ```
+        
+    - Hash: Dictionary/Map based datastructure that stores key, value pair object. 
+      Datatype supported to be hashed as key - Integer, Boolean, String
+      ```
+      a = {1:"one", 2:"two", "3": 3, 3: "three"}
+      a[1]
+      a[2]
+      a[3]
+      a["3"]
+
+      a["three"] // NULL if key doesn't exist
+      ```
 
 - Null/truth based if else conditional statements.
 - Variable binding: 
@@ -84,3 +96,6 @@ Interpreter programming language written with Go language.
     var s = "Hello world"
     len(s) // returns 11
     ```
+
+ - print(<object>) 
+   Outputs the data to console.  
