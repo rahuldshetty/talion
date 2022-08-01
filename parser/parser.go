@@ -80,6 +80,7 @@ func New(l *lexer.Lexer) *Parser{
 	p.registerPrefix(token.FUNCTION, p.parseFunctionLiteral)
 	p.registerPrefix(token.STRING, p.parseStringLiteral)
 	p.registerPrefix(token.LBRACKET, p.parseListLiteral)
+	p.registerPrefix(token.LBRACE, p.parseHashLiteral)
 
 
 	// binary operatory parsing
@@ -332,6 +333,36 @@ func (p *Parser) parseListLiteral() ast.Expression{
 	array.Elements = p.parseExpressionList(token.RBRACKET)
 
 	return array
+}
+
+// Hashmap
+func (p *Parser) parseHashLiteral() ast.Expression{
+	hash := &ast.HashLiteral{Token: p.curToken}
+	hash.Pairs = make(map[ast.Expression]ast.Expression)
+
+	for !p.peekTokenIs(token.RBRACE){
+		p.nextToken()
+		key := p.parseExpression(LOWEST)
+
+		if !p.expectPeek(token.COLON){
+			return nil
+		}
+
+		p.nextToken()
+		value := p.parseExpression(LOWEST)
+
+		hash.Pairs[key] = value
+
+		if !p.peekTokenIs(token.RBRACE) && !p.expectPeek(token.COMMA){
+			return nil
+		}
+	}
+
+	if !p.expectPeek(token.RBRACE){
+		return nil
+	}
+	
+	return hash
 }
 
 // parses x,y,z item expression start and ending with "end" token opposites
