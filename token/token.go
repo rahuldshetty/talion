@@ -47,6 +47,8 @@ const (
 	LBRACKET = "["
 	RBRACKET = "]"
 
+	COLON = ":"
+
 	// Keywords
 	FUNCTION = "FUNCTION" // fn
 	VAR = "VAR" // var
