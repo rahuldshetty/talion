@@ -19,7 +19,7 @@ You can now type commands
 Any coding example without "hello world" program is incomplete, so this is how you greet in talion:
 ```
 >> greet = fn (name) { return "Hello " + name + "!" }
->> var name = "world"
+>> var name = "World"
 >> print(greet(name))
 Hello World!
 ```
