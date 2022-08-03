@@ -1,5 +1,5 @@
 
-# What Next ?
+# What's Next ?
 
 talion is a programming language that is built for educational purpose. Feel free to pull the code & play around with it to make your own programming language syntax.
 

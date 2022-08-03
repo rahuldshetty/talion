@@ -12,4 +12,4 @@
 - [Operators](operators.md)
 - [Control Statements](control_statements.md)
 - [Function](function.md)
-- [What Next ?](future.md)
+- [What's Next?](future.md)
