@@ -36,7 +36,7 @@ Interpreter programming language written with Go language.
     var b = "hello"
     var c = true;
     var j = "hello" + " " + "world"
-    "hello"[10]
+    "hello"[1]
     ```
 - Data Structures:
     - List: 
