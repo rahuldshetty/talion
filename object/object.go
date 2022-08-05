@@ -13,6 +13,7 @@ type ObjectType string
 
 const (
 	INTEGER_OBJ = "INTEGER"
+	FLOAT_OBJ = "FLOAT"
 	STRING_OBJ = "STRING"
 	BOOLEAN_OBJ = "BOOLEAN"
 	NULL_OBJ = "NULL"
@@ -39,7 +40,16 @@ type Integer struct{
 func (i *Integer) Inspect() string{ return fmt.Sprintf("%d", i.Value) }
 func (i *Integer) Type() ObjectType { return INTEGER_OBJ }
 
-// Integer Data type 
+
+// Float Data type 
+type Float struct{
+	Value float64
+}
+
+func (f *Float) Inspect() string{ return fmt.Sprintf("%f", f.Value) }
+func (f *Float) Type() ObjectType { return FLOAT_OBJ }
+
+// String Data type 
 type String struct{
 	Value string
 }

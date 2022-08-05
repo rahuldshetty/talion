@@ -97,6 +97,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		case *ast.IntegerLiteral: 
 			return &object.Integer{Value: node.Value}
 
+		case *ast.FloatLiteral: 
+			return &object.Float{Value: node.Value}
+
 		case *ast.StringLiteral:
 			return &object.String{Value: node.Value}
 
@@ -481,11 +484,14 @@ func evalStringInfixExpression(operator string, left, right object.Object) objec
 }
 
 func evalMinusPrefixOperatorExpression(right object.Object) object.Object{
-	if right.Type() != object.INTEGER_OBJ{
-		return newError("Unknown operator: -%s", right.Type())
+	switch obj := right.(type) {
+		case *object.Integer:
+			return &object.Integer{Value: -obj.Value}
+		case *object.Float:
+			return &object.Float{Value: -obj.Value}
+		default:
+			return newError("Unknown operator: -%s", right.Type())
 	}
-	value := right.(*object.Integer).Value
-	return &object.Integer{Value: -value}
 }
 
 func nativeBoolToBooleanObject(input bool) *object.Boolean{
