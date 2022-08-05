@@ -9,12 +9,11 @@ Numeric data type that is used to store values with fractional or decimal values
 
 -   Example:
     ```
-    one = 11
-    two = 22
-    one * two // 242
-    one + two // 33
-    one - two // -11
-    one / two // 0 - division returns integer part.
+    >> 1+25.6 - (26.1*45)/2.4
+    -462.775000
+
+    >> 1+1.59 >= 0.5 - 455
+    true
 
     ```
 
