@@ -16,6 +16,7 @@ const (
 	IDENT = "IDENT" // foo, bar, add, x, y
 	INT = "INT" // 3, 5151, 45
 	STRING = "STRING" // "hello world"
+	FLOAT = "FLOAT" // 3.45, 45.55555555
 	
 	// Operators
 	ASSIGN = "="

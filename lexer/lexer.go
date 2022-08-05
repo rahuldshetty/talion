@@ -91,8 +91,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Type = token.LookupIdent(tok.Literal)
 			return tok
 		} else if isDigit(l.ch){
-			tok.Literal = l.readNumber()
-			tok.Type = token.INT
+			tok = l.readDecimal()
 			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
@@ -127,6 +126,21 @@ func (l *Lexer) readIdentifer() string {
 	}
 	return l.input[position:l.position]
 }
+
+// read decimal number
+func (l *Lexer) readDecimal() token.Token{
+	integer := l.readNumber()
+
+	// if come across . then try to parse next string as integer to form decimal value
+	if l.ch == '.' && isDigit(l.peekChar()){
+		l.readChar()
+		fraction := l.readNumber()
+		return token.Token{Type: token.FLOAT, Literal: integer + "." + fraction}
+	}
+
+	return token.Token{Type: token.INT, Literal: integer}
+}
+
 
 // fetch number text
 func (l *Lexer) readNumber() string {
