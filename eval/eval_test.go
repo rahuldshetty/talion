@@ -546,6 +546,10 @@ func TestIndexExpressions(t *testing.T){
 			`{"bar":1, "2":2, "foo": 3}["bar"]`,
 			1,
 		},
+		{
+			`{1.565:1, "2":2, "foo": 3}[1.565]`,
+			1,
+		},
 	}
 
 	for _, tt := range inputs{

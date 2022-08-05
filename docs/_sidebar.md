@@ -5,6 +5,7 @@
 - [Variables](variable.md)
 - [Data Types](datatypes/intro.md)
     - [Integer](datatypes/integer.md)
+    - [Float](datatypes/float.md)
     - [Boolean](datatypes/boolean.md)
     - [String](datatypes/string.md)
     - [List](datatypes/list.md)
