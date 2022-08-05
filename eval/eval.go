@@ -253,37 +253,74 @@ func evalAssignmentExpression(assignment *ast.AssignStatement, env *object.Envir
 
 func evalHashAssignment(hashAssign *ast.HashAssignStatement, env *object.Environment) object.Object{
 	// check if hashmap exists
-	hash, ok := env.Get(hashAssign.Name.String())
+	identifer, ok := env.Get(hashAssign.Name.String())
 
 	if !ok{
 		return newError("Invalid Hash reference: %s", hashAssign.Name.Value)
 	}
 
-	hashMap := hash.(*object.Hash)
-	if isError(hashMap){
-		return hashMap
+	switch node := identifer.(type){
+
+		// Assignment on Hash
+		case *object.Hash:
+			hashMap := node
+			if isError(hashMap){
+				return hashMap
+			}
+			
+			// get key node value & check if its hashable
+			key := Eval(hashAssign.Key, env)
+			if isError(key){
+				return key
+			}
+
+			hashKey, ok := key.(object.Hashable)
+
+			if !ok {
+				return newError("Type not support as hash key: %s", key.Type())
+			}
+
+			hashed := hashKey.HashKey()
+
+			value := Eval(hashAssign.Value, env)
+			if isError(value){
+				return value
+			}
+			hashMap.Pairs[hashed] = object.HashPair{ Key: key, Value: value }
+		
+		// Identifer is a list
+		case *object.List:
+			// get key node value & check if its integer type
+			key := Eval(hashAssign.Key, env)
+			if isError(key){
+				return key
+			}
+			index, ok := key.(*object.Integer)
+			if !ok {
+				return newError("Invalid index type. Got=%s, Expected=Integer", key.Type())
+			}
+			idx := index.Value
+			max := int64(len(node.Elements))
+
+			// zero-indexing: 0 to len(list) - 1
+			if !(idx >= 0 && idx < max){
+				if idx >= -max && idx <= -1{
+					idx = max + idx
+				} else {
+					return newError("Invalid index value. Got=%d, List Size=%d", idx, max)
+				}
+			}		
+
+			value := Eval(hashAssign.Value, env)
+			if isError(value){
+				return value
+			}
+
+			node.Elements[idx] = value
+
+		default:
+			return newError("Invalid object found for expression. Got=%T (%+v)", identifer, identifer)
 	}
-	
-	// get key node value & check if its hashable
-	key := Eval(hashAssign.Key, env)
-	if isError(key){
-		return key
-	}
-
-	hashKey, ok := key.(object.Hashable)
-
-	if !ok {
-		return newError("Type not support as hash key: %s", key.Type())
-	}
-
-	hashed := hashKey.HashKey()
-
-	value := Eval(hashAssign.Value, env)
-	if isError(value){
-		return value
-	}
-
-	hashMap.Pairs[hashed] = object.HashPair{ Key: key, Value: value }
 
 	return nil
 

@@ -267,6 +267,14 @@ func TestErrorHandling(t *testing.T) {
 			`{"name":"hello"}[fn(x){x}]`,
 			"Type not support as hash key: FUNCTION",
 		},
+		{
+			`a=[1,2,3]; a[1.2]=4;`,
+			"Invalid index type. Got=FLOAT, Expected=Integer",
+		},
+		{
+			`a=[1,2,3]; a[4]=4;`,
+			"Invalid index value. Got=4, List Size=3",
+		},
 	}
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
@@ -308,6 +316,7 @@ func TestAssignExpressions(t *testing.T){
 		{"var a = 5; a = a + 10; a;", 15},
 		{"var a = [1, 2, 3]; a = 1; a;", 1},
 		{"var a = [1, 2, 3]; b=a; b[2];", 3},
+		{"var a = [1, 2, 3]; a[0] = 2; a[0];", 2},
 	}
 	for _, tt := range tests{
 		evaluated := testEval(tt.input)

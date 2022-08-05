@@ -7,6 +7,7 @@ List data type are used to store collection of other data type elements. Unlike 
 - Supports len() method to count the number of elements present in the list.
 - Supports push() method to insert new element in to the list.
 - Lists are mutable data type in talion, i.e elements pushed will update to the original object in memory.
+- Update list value by using assignment operator. 
 
 - Example Usage:
     ```
@@ -16,4 +17,6 @@ List data type are used to store collection of other data type elements. Unlike 
     push(a, a[2](2) )               // Run the method definition present in 2nd index of list and push the value into the same list
     a[3]                            // 3
     len(a)                          // 5
+    a[0] = 15
+    a[0]                            // 15
     ```
