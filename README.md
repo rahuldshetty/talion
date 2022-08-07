@@ -1,15 +1,13 @@
 
 <div align="center" style="display:flex; align-items:center;justify-content: center;background:#e1e1e1;color:#0f0f0f;padding:50px;">
     <img alt="talion logo" src="https://raw.githubusercontent.com/rahuldshetty/talion/master/docs/_media/logo_l.png" width="100">
-    <div style="font-size: 22px;">
-        talion
-    </div>
 </div>
 
 <p align="center">
-    [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](https://go.dev/)
-    [![GoReportCard example](https://goreportcard.com/badge/github.com/rahuldshetty/talion)](https://goreportcard.com/report/github.com/rahuldshetty/talion)
-    <img alt="undefined" src="https://img.shields.io/badge/platform-linux | macosx | windows-green.svg">
+    <img alt="go-version" src="https://img.shields.io/github/go-mod/go-version/rahuldshetty/talion?style=flat-square">
+    <img alt="no-languages" src="https://img.shields.io/github/languages/count/rahuldshetty/talion?color=red&style=flat-square">
+    <img alt="commit-activity" src="https://img.shields.io/github/commit-activity/w/rahuldshetty/talion?color=green&style=flat-square">
+   <img alt="stars" src="https://img.shields.io/github/stars/rahuldshetty/talion?style=social">
 </p>
 
 # talion <!-- {docsify-ignore-all} -->
