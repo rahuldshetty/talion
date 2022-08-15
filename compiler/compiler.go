@@ -1,6 +1,8 @@
 package compiler
 
 import (
+	"fmt"
+
 	"github.com/rahuldshetty/talion/ast"
 	"github.com/rahuldshetty/talion/code"
 	"github.com/rahuldshetty/talion/object"
@@ -49,6 +51,14 @@ func (c *Compiler) Compile(node ast.Node) error{
 			err = c.Compile(node.Right)
 			if err != nil{
 				return err
+			}
+
+			switch node.Operator{
+				case "+":
+					c.emit(code.OpAdd)
+				
+				default:
+					return fmt.Errorf("unknown operator: %s", node.Operator)
 			}
 
 		case *ast.IntegerLiteral:
