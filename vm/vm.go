@@ -42,6 +42,8 @@ func (vm *VM) Run() error {
 		op := code.Opcode(vm.instructions[ip])
 
 		switch op{
+			case code.OpPop:
+				vm.pop()
 
 			case code.OpConstant:
 				constIndex := code.ReadUint16(vm.instructions[ip+1:])
@@ -79,4 +81,8 @@ func (vm *VM) pop() object.Object{
 	obj := vm.stack[vm.sp - 1]
 	vm.sp--
 	return obj
+}
+
+func (vm *VM) LastPoppedStackElem() object.Object{
+	return vm.stack[vm.sp]
 }
